@@ -1,0 +1,150 @@
+一 为什么要有箭头函数
+
+我们在日常开发中，可能会需要写类似下面的代码
+
+  const Person = {
+    'name': 'little bear',
+    'age': 18,
+    'sayHello': function () {
+      setInterval(function () {
+        console.log('我叫' + this.name + '我今年' + this.age + '岁!')
+      }, 1000)
+    }
+  }
+  Person.sayHello()
+上例的输出结果是什么呢？可能对javascript特性不是很熟悉的同学(我自己也是)会认为输出当然是
+我叫little bear,今年18岁咯。如果你的答案是这个的话，那么我要恭喜你，答错了。其实上例的输出结果是我叫undefined，今年我undefined岁。为什么会输出这种结果呢？
+这是因为setInterval执行的时候，是在全局作用域下的，所有this指向的是全局window,而window上没有name和age，所以当然输出的是undefined咯。不明白的同学可以去看看this的工作原理this。
+那么，我们怎么要解决这个问题呢？
+通常的写法是缓存this,然后在setInterval中用缓存的this进行操作，如下
+
+ const Person = {
+    'name': 'little bear',
+    'age': 18,
+    'sayHello': function () {
+     let self = this
+      setInterval(function () {
+        console.log('我叫' + self.name + '我今年' + self.age + '岁!')
+      }, 1000)
+    }
+  }
+  const sayHelloFun = Person.sayHello
+  sayHelloFun()
+使用上叙方法，输出的结果就是大家所期待的我叫little bear，我今年18岁了。
+那么，大家可能会觉得这样不科学，明明是写在对象里面的方法，为什么还要使用缓存这个对象才能正确使用。ECMA组织觉得这确实是个问题，之后在es6的新特性里添加了箭头函数，它能很好的解决这个问题。另外箭头函数还用简化代码量的特点。
+
+二 什么是箭头函数
+
+箭头函数的语法非常简单，看一下最简单的箭头函数表示法
+() => console.log('Hello')
+之前没有接触过箭头函数的人可能会惊讶于其代码的简洁。对比之前如果要写一个这样的函数
+
+function(){
+console.log('hello')
+}
+箭头函数的简洁性一目了然。
+更多关于箭头函数语法可点击箭头函数语法
+
+三 和普通函数的区别
+
+从上面的例子中，我们已经可以看出箭头函数的优势。
+和普通函数相比，箭头函数主要就是以下两个方面的特点
+
+不绑定this，arguments
+更简化的代码语法
+第二个特点不需要过多赘述，下面我们来看看不绑定this和arguments这两个特点
+
+3.1 不绑定this
+
+什么叫不绑定this，我个人的理解为箭头函数的this其实就是在定义的时候就确定好的，以后不管怎么调用这个箭头函数，箭头函数的this始终为定义时的this 
+我们还是以前面的那个setInterval代码为例
+
+const Person = {
+    'name': 'little bear',
+    'age': 18,
+    'sayHello': function () {
+      setInterval(function () {
+        console.log('我叫' + this.name + '我今年' + this.age + '岁!')
+      }, 1000)
+    }
+Person.sayHello()
+当Person.sayHello()去执行setInterval的时候，是在全局作用下执行的所有setInterval回调函数的this就为全局对象。es3-5中的函数this的值和调用这个函数的上下文有关。（注意是调用）
+我们用箭头函数重写上诉函数
+
+const Person = {
+    'name': 'little bear',
+    'age': 18,
+    'sayHello': () => {
+      setInterval(() => {
+        console.log('我叫' + this.name + '我今年' + this.age + '岁!')
+      }, 1000)
+    }
+Person.sayHello()
+大家猜猜结果是什么？？？
+输出的是我叫'little bear'，今年18岁嘛？
+哈哈，太天真了，我开始也是这样想的，后面输出之后发现结果不对，输出的还是undefined。为什么呢？？
+因为我把方法写在了对象里，而对象的括号是不能封闭作用域的。所以此时的this还是指向全局对象。
+所以，通过以上的错误可以提醒我们，最好不要用箭头函数作为对象的方法。
+我们需要重新举一个例子，如下
+
+function Person () {
+  this.name = 'little bear',
+  this.age = 18
+  let self = this
+  setInterval(function sayHello () {
+    console.log('我叫' + self.name + '我今年' + self.age + '岁!')
+  }, 1000)
+}
+let p = new Person()
+缓存this，然后输出，能达到我们想要的结果。
+把上述例子改为箭头函数的形式如下
+
+function Person () {
+  this.name = 'little bear',
+  this.age = 18
+  setInterval(() => {
+    console.log('我叫' + this.name + '我今年' + this.age + '岁')
+},1000)
+}
+let p = new Person()
+我们可以看到，箭头函数使用了定义时上下文的this，且与在哪里调用没有关系。
+
+3.2 不绑定arguments
+
+箭头函数还有一个比较有特点的地方就是其不绑定arguments,即如果你在箭头函数中使用arguments参数不能得到想要的内容。
+
+let arrowfunc = () => console.log(arguments.length)
+arrowfunc()
+//output 
+arguments is not defined
+所以在箭头函数中我们是不能直接使用arguments对象的，但是如果我们又想获得函数的参数怎么办呢？
+我们可以使用剩余参数来取代arguments剩余参数详情
+
+let arrowfunc = (...theArgs) => console.log(theArgs.length)
+arrowfunc(1,2)
+//output
+2
+四 什么时候不能用箭头函数
+
+前面我们已经看到了很多关于es6箭头函数的好处，也看到了箭头函数的一些不足。那么我们应该在什么时候使用箭头函数，而什么时候最好不要使用呢？
+1.作为对象的方法
+在写这篇博客的例子时，由于本人的水平确实有限，导致了篇头出现的错误。不过我也想由此告诉大家，最好不要在对象的方法中使用箭头函数，这样可能会导致一些问题的产生。除非你很熟悉箭头函数。
+2.不能作为构造函数
+由于箭头函数的this不绑定的特点，所以不能使用箭头函数作为构造函数，实际上如果这样做了，也会报错。
+3.定义原型方法
+
+function Person (name){
+this.name = name
+}
+Person.prototype.sayHello = () => {
+    console.log(this)
+}
+var p1 = new Person()
+p1.sayHello()
+//output 
+window对象
+这里的this指向的是window对象，这点和在对象方法中定义有点像
+
+五 总结
+
+箭头函数由于其代码的简洁性和不绑定调用者this的特点，在非方法函数中使用是最合适的，而在方法函数中使用，需要特别注意它的this绑定问题，如果需要动态的修改this，最好还是不要使用箭头函数了。所以永远没有一个解决方案能解决所有事情，只有合适的应用场景。
