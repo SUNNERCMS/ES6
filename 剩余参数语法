@@ -18,4 +18,4 @@ function argsAsArray(fn,arr) {
     return fn(...arr);
 }
 剩余参数语法允许我们将一个不定数量的参数表示为一个数组。
-[剩余参数语法](https://blog.csdn.net/qq_39207948/article/details/80405385)
+https://blog.csdn.net/qq_39207948/article/details/80405385
