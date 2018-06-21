@@ -1,7 +1,5 @@
 一 为什么要有箭头函数
-
 我们在日常开发中，可能会需要写类似下面的代码
-
   const Person = {
     'name': 'little bear',
     'age': 18,
