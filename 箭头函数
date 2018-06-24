@@ -108,22 +108,18 @@ let p = new Person()
 我们可以看到，箭头函数使用了定义时上下文的this，且与在哪里调用没有关系。
 
 3.2 不绑定arguments
-
 箭头函数还有一个比较有特点的地方就是其不绑定arguments,即如果你在箭头函数中使用arguments参数不能得到想要的内容。
-
 let arrowfunc = () => console.log(arguments.length)
 arrowfunc()
 //output 
 arguments is not defined
 所以在箭头函数中我们是不能直接使用arguments对象的，但是如果我们又想获得函数的参数怎么办呢？
 我们可以使用剩余参数来取代arguments剩余参数详情
-
 let arrowfunc = (...theArgs) => console.log(theArgs.length)
 arrowfunc(1,2)
 //output
 2
 四 什么时候不能用箭头函数
-
 前面我们已经看到了很多关于es6箭头函数的好处，也看到了箭头函数的一些不足。那么我们应该在什么时候使用箭头函数，而什么时候最好不要使用呢？
 1.作为对象的方法
 在写这篇博客的例子时，由于本人的水平确实有限，导致了篇头出现的错误。不过我也想由此告诉大家，最好不要在对象的方法中使用箭头函数，这样可能会导致一些问题的产生。除非你很熟悉箭头函数。
