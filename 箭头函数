@@ -15,7 +15,6 @@
 这是因为setInterval执行的时候，是在全局作用域下的，所有this指向的是全局window,而window上没有name和age，所以当然输出的是undefined咯。不明白的同学可以去看看this的工作原理this。
 那么，我们怎么要解决这个问题呢？
 通常的写法是缓存this,然后在setInterval中用缓存的this进行操作，如下
-
  const Person = {
     'name': 'little bear',
     'age': 18,
@@ -36,7 +35,6 @@
 箭头函数的语法非常简单，看一下最简单的箭头函数表示法
 () => console.log('Hello')
 之前没有接触过箭头函数的人可能会惊讶于其代码的简洁。对比之前如果要写一个这样的函数
-
 function(){
 console.log('hello')
 }
@@ -44,19 +42,14 @@ console.log('hello')
 更多关于箭头函数语法可点击箭头函数语法
 
 三 和普通函数的区别
-
 从上面的例子中，我们已经可以看出箭头函数的优势。
 和普通函数相比，箭头函数主要就是以下两个方面的特点
-
 不绑定this，arguments
 更简化的代码语法
 第二个特点不需要过多赘述，下面我们来看看不绑定this和arguments这两个特点
-
 3.1 不绑定this
-
 什么叫不绑定this，我个人的理解为箭头函数的this其实就是在定义的时候就确定好的，以后不管怎么调用这个箭头函数，箭头函数的this始终为定义时的this 
 我们还是以前面的那个setInterval代码为例
-
 const Person = {
     'name': 'little bear',
     'age': 18,
@@ -68,7 +61,6 @@ const Person = {
 Person.sayHello()
 当Person.sayHello()去执行setInterval的时候，是在全局作用下执行的所有setInterval回调函数的this就为全局对象。es3-5中的函数this的值和调用这个函数的上下文有关。（注意是调用）
 我们用箭头函数重写上诉函数
-
 const Person = {
     'name': 'little bear',
     'age': 18,
@@ -84,7 +76,6 @@ Person.sayHello()
 因为我把方法写在了对象里，而对象的括号是不能封闭作用域的。所以此时的this还是指向全局对象。
 所以，通过以上的错误可以提醒我们，最好不要用箭头函数作为对象的方法。
 我们需要重新举一个例子，如下
-
 function Person () {
   this.name = 'little bear',
   this.age = 18
@@ -96,7 +87,6 @@ function Person () {
 let p = new Person()
 缓存this，然后输出，能达到我们想要的结果。
 把上述例子改为箭头函数的形式如下
-
 function Person () {
   this.name = 'little bear',
   this.age = 18
@@ -106,7 +96,6 @@ function Person () {
 }
 let p = new Person()
 我们可以看到，箭头函数使用了定义时上下文的this，且与在哪里调用没有关系。
-
 3.2 不绑定arguments
 箭头函数还有一个比较有特点的地方就是其不绑定arguments,即如果你在箭头函数中使用arguments参数不能得到想要的内容。
 let arrowfunc = () => console.log(arguments.length)
@@ -126,7 +115,6 @@ arrowfunc(1,2)
 2.不能作为构造函数
 由于箭头函数的this不绑定的特点，所以不能使用箭头函数作为构造函数，实际上如果这样做了，也会报错。
 3.定义原型方法
-
 function Person (name){
 this.name = name
 }
