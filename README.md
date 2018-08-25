@@ -6,4 +6,4 @@
 #### 3、Set-weakSet
 #### 4、Map-weakMap
 #### 5、Interator
-##
+#### 6
