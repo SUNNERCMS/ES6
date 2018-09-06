@@ -11,8 +11,10 @@
   }
   Person.sayHello()
 上例的输出结果是什么呢？可能对javascript特性不是很熟悉的同学(我自己也是)会认为输出当然是
-我叫little bear,今年18岁咯。如果你的答案是这个的话，那么我要恭喜你，答错了。其实上例的输出结果是我叫undefined，今年我undefined岁。为什么会输出这种结果呢？
-这是因为setInterval执行的时候，是在全局作用域下的，所有this指向的是全局window,而window上没有name和age，所以当然输出的是undefined咯。不明白的同学可以去看看this的工作原理this。
+我叫little bear,今年18岁咯。如果你的答案是这个的话，那么我要恭喜你，答错了。其实上例的输出结果是我叫undefined，今年我undefined岁。
+为什么会输出这种结果呢？
+这是因为setInterval执行的时候，是在全局作用域下的，所有this指向的是全局window,而window上没有name和age，所以当然输出的是undefined咯。
+不明白的同学可以去看看this的工作原理this。
 那么，我们怎么要解决这个问题呢？
 通常的写法是缓存this,然后在setInterval中用缓存的this进行操作，如下
  const Person = {
