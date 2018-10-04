@@ -107,6 +107,7 @@ arguments is not defined
 let arrowfunc = (...theArgs) => console.log(theArgs.length)
 arrowfunc(1,2)
 //output
+
 四 什么时候不能用箭头函数
 前面我们已经看到了很多关于es6箭头函数的好处，也看到了箭头函数的一些不足。那么我们应该在什么时候使用箭头函数，而什么时候最好不要使用呢？
 1.作为对象的方法
